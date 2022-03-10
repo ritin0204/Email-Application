@@ -14,7 +14,8 @@ def index(request):
 
     # Authenticated users view their inbox
     if request.user.is_authenticated:
-        return render(request, "mail/inbox.html")
+        user = request.user
+        return render(request, "mail/inbox.html",{"user" : user})
 
     # Everyone else is prompted to sign in
     else:
@@ -155,6 +156,8 @@ def logout_view(request):
 def register(request):
     if request.method == "POST":
         email = request.POST["email"]
+        first = request.POST["first"]
+        last = request.POST["last"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -167,6 +170,8 @@ def register(request):
         # Attempt to create new user
         try:
             user = User.objects.create_user(email, email, password)
+            user.first = first
+            user.last = last
             user.save()
         except IntegrityError as e:
             print(e)

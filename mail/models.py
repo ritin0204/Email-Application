@@ -3,7 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    first = models.CharField(max_length = 40,blank=True)
+    last = models.CharField(max_length=40,blank=True)
 
 
 class Email(models.Model):

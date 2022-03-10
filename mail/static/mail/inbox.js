@@ -62,29 +62,18 @@ function load_mailbox(mailbox) {
         .then(response => response.json())
         .then(emails => {
             emails.forEach((element) => {
-                    if (element.read === true) {
-                        var item = document.createElement("div");
-                        item.className = `card bg-light border-primary mb-3`;
-                        item.innerHTML = `<div class="card-body" id="item-${element.id}"><p class="float-right text-muted "> ${element.timestamp}</p>
- <p><strong>From :</strong> ${element.sender}</br><strong>Subject :</strong>${element.subject}</br>
-                 ${element.body.slice(0, 100)}
-                 <button class="btn btn-sm btn-outline-primary float-right" onclick="show_email(${element.id})">See</button>
-                 </div>`;
-                        document.querySelector("#emails-view").appendChild(item);
-                    } else {
-                        var item = document.createElement("div");
-                        item.className = `card bg-white border-primary mb-3`;
-                        item.innerHTML = `<div class="card-body" id="item-${element.id}">
-              <p class="float-right text-muted "> ${element.timestamp}</p>
-              <strong>From :</strong> ${element.sender}</br>
-              <strong>Subject :</strong> ${element.subject}<span class="badge badge-primary">New</span>
-                <br>
-                ${element.body.slice(0, 100)}
-                <button class="btn btn-sm btn-outline-primary float-right" onclick="show_email(${element.id})">See</button>
-                </div>`;
-                        document.querySelector("#emails-view").appendChild(item);
+                var item = document.createElement("div");
+                item.className = `card mb-3`;
+                item.style = "background-image: linear-gradient(to bottom left,rgb(34, 22, 90),rgb(0, 0, 0));border-radius:7em;padding-left :2em;padding-right:2em;border:4px solid black;";
+                item.innerHTML = `<a onclick="show_email(${element.id})"><div class="card-body" id="item-${element.id}">
+                <p class="float-right text-light "> ${element.timestamp}</p>
+                <p><strong>From : </strong> ${element.sender}</br><strong>Subject : </strong>${element.subject}</br>
+                ${element.body.slice(0, 50)}
+                ...</div></a>`;
+                if (element.read === false) {
+                    item.style = "background-image: linear-gradient(to bottom left,rgb(34, 22, 90),rgb(0, 0, 0));border-radius:7em;padding-left :2em;padding-right:2em;border:4px solid blue;";
                 }
-                
+                document.querySelector("#emails-view").appendChild(item);
             });
         });
     }
@@ -102,7 +91,7 @@ function show_email(emailid) {
             // Print email
             console.log(email);
             document.querySelector("#showemail-view").innerHTML = `<div class="card-header">
-             <strong>From :</strong> ${email.sender}</br>
+            <strong>From :</strong> ${email.sender}</br>
             <strong>Recipients :</strong> ${user}</br>
             <strong>Subject :</strong> ${email.subject}</br>
             <strong>Sent on :</strong>${email.timestamp}</br>
